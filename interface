@@ -1,0 +1,19 @@
+entity: {
+	name: String,
+	type: String,
+	description: String,
+	producing: [interface],
+	consuming: [interface]
+}
+
+interface: {
+	id: number,
+	type: String,
+	url: String,
+	urn: String
+}
+
+service : {
+    name: String,
+    enteties: [entety]      
+}
