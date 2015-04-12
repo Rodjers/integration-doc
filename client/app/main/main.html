@@ -11,9 +11,47 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li><a href="#" tooltip="{{thing.info}}">{{thing.name}}</a></li>
+      <h1 class="page-header">Entities</h1>
+      <h2>New entity</h2>
+      <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="entity in entities">
+        <li><a href="#" tooltip="{{thing.info}}">{{entity.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Integration Points</h1>
+      <h2>New integration point</h2>
+      <form>
+        <div class="form-group">
+          <label for="integrationPointType">Type</label>
+          <input type="text" class="form-control" id="integrationPointType" ng-model="newIntegrationPoint.type">
+        </div>
+        <div class="form-group">
+          <label for="integrationpointUrl">URL</label>
+          <input type="text" class="form-control" id="integrationpointUrl" ng-model="newIntegrationPoint.url">
+        </div>
+        <div class="form-group">
+          <label for="integrationpointUrn">URN</label>
+          <input type="text" class="form-control" id="integrationpointUrn" ng-model="newIntegrationPoint.urn">
+        </div>
+        <button ng-click="addIntegrationPoint(newIntegrationPoint)" class="btn btn-default">Add integration point</button>
+      </form>
+      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="integrationPoint in integrationPoints">
+        <li><a href="#" tooltip="{{thing.info}}">{{integrationPoint.url}} {{integrationPoint.urn}}</a></li>
       </ul>
     </div>
   </div>
@@ -21,8 +59,8 @@
 
 <footer class="footer">
   <div class="container">
-      <p>Angular Fullstack v2.0.13 |
-        <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
-         <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a></p>
+      <p>Integration Documentation v0.1.0 |
+        <a href="https://twitter.com/gitlestad">@gitlestad</a> |
+         <a href="https://github.com/Rodjers/integration-doc/issues?state=open">Issues</a></p>
   </div>
 </footer>

@@ -2,21 +2,22 @@
 
 angular.module('integrationDocApp')
   .controller('MainCtrl', function ($scope, $http) {
-    $scope.awesomeThings = [];
+    $scope.entities = [];
 
-    $http.get('/api/things').success(function(awesomeThings) {
-      $scope.awesomeThings = awesomeThings;
+    $http.get('/api/entities').success(function(entities) {
+      $scope.entities = entities;
     });
 
-    $scope.addThing = function() {
-      if($scope.newThing === '') {
-        return;
-      }
-      $http.post('/api/things', { name: $scope.newThing });
-      $scope.newThing = '';
-    };
+    $scope.integrationPoints = [];
 
-    $scope.deleteThing = function(thing) {
-      $http.delete('/api/things/' + thing._id);
-    };
+    $http.get('/api/integrationPoints').success(function(integrationPoints) {
+      $scope.integrationPoints = integrationPoints;
+    });
+
+    $scope.addIntegrationPoint = function(newIntegrationPoint) {
+      $http.post('/api/integrationPoints', newIntegrationPoint).success(function(data){
+        $scope.integrationPoints.push(data);
+        $scope.newIntegrationPoint = {};
+      })
+    }
   });

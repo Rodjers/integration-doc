@@ -5,27 +5,34 @@
 
 'use strict';
 
-var Thing = require('../api/thing/thing.model');
+var Entity = require('../api/entity/entity.model');
+var IntegrationPoint = require('../api/integrationPoint/integrationPoint.model');
 
-
-Thing.find({}).remove(function() {
-  Thing.create({
-    name : 'Development Tools',
-    info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
+IntegrationPoint.find({}).remove(function() {
+  IntegrationPoint.create([{
+    type: 'SOAP',
+    url: 'AssetInterface.wsdl',
+    urn: 'QueryAssetById'
   }, {
-    name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
+    type: 'SOAP',
+    url: 'Customer.wsdl',
+    urn: 'QueryCustomer'
   }, {
-    name : 'Smart Build System',
-    info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
-  },  {
-    name : 'Modular Structure',
-    info : 'Best practice client and server structures allow for more code reusability and maximum scalability'
-  },  {
-    name : 'Optimized Build',
-    info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },{
-    name : 'Deployment Ready',
-    info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
+    type: 'SOAP',
+    url: 'ActorInterface.wsdl',
+    urn: 'QueryActor'
+  }], function(err){
+    Entity.find({}).remove(function() {
+      IntegrationPoint.find({}, function(err, integrationPoints){
+        Entity.create({
+          name: 'CustomerPS',
+          type: 'Proxy',
+          description: 'Service for querying a customer from Siebel and ISCu',
+          producing: [integrationPoints[1]._id],
+          consuming: [integrationPoints[0]._id, integrationPoints[2]._id]
+        })
+      });
+    });
   });
 });
+

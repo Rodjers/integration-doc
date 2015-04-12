@@ -3,10 +3,14 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var IntegrationPoint = require('../integrationPoint/integrationPoint.model');
+
 var EntitySchema = new Schema({
   name: String,
-  info: String,
-  active: Boolean
+  type: String,
+  description: String,
+  producing: [{type: Schema.Types.ObjectId, ref: 'IntegrationPoint'}],
+  consuming: [{type: Schema.Types.ObjectId, ref: 'IntegrationPoint'}]
 });
 
 module.exports = mongoose.model('Entity', EntitySchema);

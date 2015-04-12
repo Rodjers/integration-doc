@@ -5,7 +5,7 @@ var Entity = require('./entity.model');
 
 // Get list of entitys
 exports.index = function(req, res) {
-  Entity.find(function (err, entitys) {
+  Entity.find({}).populate('producing').populate('consuming').exec(function (err, entitys) {
     if(err) { return handleError(res, err); }
     return res.json(200, entitys);
   });
