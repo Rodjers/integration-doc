@@ -22,7 +22,17 @@ exports.show = function(req, res) {
 
 // Creates a new entity in the DB.
 exports.create = function(req, res) {
-  Entity.create(req.body, function(err, entity) {
+  var newEntity = req.body;
+  
+var i = 0;
+
+  for (i = 0; i < newEntity.producing.length; i++){
+    newEntity.producing[i] = newEntity.producing[i]._id;
+  }
+  for (i = 0; i < newEntity.consuming.length; i++){
+    newEntity.consuming[i] = newEntity.consuming[i]._id;
+  }
+  Entity.create(newEntity, function(err, entity) {
     if(err) { return handleError(res, err); }
     return res.json(201, entity);
   });

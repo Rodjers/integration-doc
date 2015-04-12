@@ -7,6 +7,7 @@
 
 var Entity = require('../api/entity/entity.model');
 var IntegrationPoint = require('../api/integrationPoint/integrationPoint.model');
+var FixedValues = require('../api/fixedValues/fixedValues.model');
 
 IntegrationPoint.find({}).remove(function() {
   IntegrationPoint.create([{
@@ -34,5 +35,12 @@ IntegrationPoint.find({}).remove(function() {
       });
     });
   });
+});
+
+FixedValues.find({}).remove(function() {
+  FixedValues.create([{
+    entityTypes: ['Proxy','SCA','Java'],
+    integrationPointTypes: ['SOAP', 'FTP', 'FileAdapter', 'POP3']
+  }])
 });
 

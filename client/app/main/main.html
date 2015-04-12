@@ -2,9 +2,8 @@
 
 <header class="hero-unit" id="banner">
   <div class="container">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">Kick-start your next web app with Angular Fullstack</p>
-    <img src="assets/images/yeoman.png" alt="I'm Yeoman">
+    <h1>Integration Documentation System</h1>
+    <p class="lead">Document your integrations fast and easy</p>
   </div>
 </header>
 
@@ -15,14 +14,55 @@
       <h2>New entity</h2>
       <form>
         <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+          <label for="entityName">Name</label>
+          <input type="text" class="form-control" id="entityName" ng-model="newEntity.name">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          <label for="entityName">Type</label>
+          <select class="form-control" ng-model="newEntity.type">
+            <option ng-repeat="entityType in fixedValues[0].entityTypes">{{ entityType }}</option>
+          </select>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <div class="form-group">
+          <label for="entityDescription">Description</label>
+          <input type="text" class="form-control" id="entityDescription" ng-model="newEntity.description">
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="form-group">
+            <label for="entityProdiced">Produced</label>
+              <div class="row">
+                <div class="col-xs-8">
+                  
+                  <select class="form-control" ng-options="integrationPoint.urn group by integrationPoints.url for integrationPoint in integrationPoints" ng-model="tempProducingIntegrationPoint"></select>
+                </div>
+                <div class="col-xs-4">
+                  <button class="btn btn-default" ng-click="newEntity.producing.push(tempProducingIntegrationPoint)">Add integration point</button>
+                </div>
+              </div>
+            </div>
+            <ul>
+              <li ng-repeat="integrationPoint in newEntity.producing">{{integrationPoint.url}}</li>
+            </ul>
+          </div>
+          <div class="col-xs-6">
+            <div class="form-group">
+              <label for="entityProdiced">Consumed</label>
+              <div class="row">
+                <div class="col-xs-8">
+                  <select class="form-control" ng-options="integrationPoint.urn group by integrationPoints.url for integrationPoint in integrationPoints" ng-model="tempConsumingIntegrationPoint"></select>
+                </div>
+                <div class="col-xs-4">
+                  <button class="btn btn-default" ng-click="newEntity.consuming.push(tempConsumingIntegrationPoint)">Add integration point</button>
+                </div>
+              </div>
+            </div>
+          </div>
+            <ul>
+              <li ng-repeat="integrationPoint in newEntity.consuming">{{integrationPoint.url}}</li>
+            </ul>
+        </div>
+        <button ng-click="addEntity(newEntity)" class="btn btn-primary">Add entity</button>
       </form>
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="entity in entities">
         <li><a href="#" tooltip="{{thing.info}}">{{entity.name}}</a></li>
@@ -37,8 +77,10 @@
       <h2>New integration point</h2>
       <form>
         <div class="form-group">
-          <label for="integrationPointType">Type</label>
-          <input type="text" class="form-control" id="integrationPointType" ng-model="newIntegrationPoint.type">
+          <label for="entityName">Type</label>
+          <select class="form-control" ng-model="newIntegrationPoint.type">
+            <option ng-repeat="integrationPointType in fixedValues[0].integrationPointTypes">{{ integrationPointType }}</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="integrationpointUrl">URL</label>
@@ -48,7 +90,7 @@
           <label for="integrationpointUrn">URN</label>
           <input type="text" class="form-control" id="integrationpointUrn" ng-model="newIntegrationPoint.urn">
         </div>
-        <button ng-click="addIntegrationPoint(newIntegrationPoint)" class="btn btn-default">Add integration point</button>
+        <button ng-click="addIntegrationPoint(newIntegrationPoint)" class="btn btn-primary">Add integration point</button>
       </form>
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="integrationPoint in integrationPoints">
         <li><a href="#" tooltip="{{thing.info}}">{{integrationPoint.url}} {{integrationPoint.urn}}</a></li>
