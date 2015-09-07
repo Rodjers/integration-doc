@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
 var IntegrationPointSchema = new Schema({
   type: String,
   url: String,
-  urn: String
+  urn: String,
+  entity: {type: Schema.Types.ObjectId, ref: 'Entity'}
 });
 
 module.exports= mongoose.model('IntegrationPoint', IntegrationPointSchema);

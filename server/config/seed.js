@@ -12,25 +12,38 @@ var FixedValues = require('../api/fixedValues/fixedValues.model');
 IntegrationPoint.find({}).remove(function() {
   IntegrationPoint.create([{
     type: 'SOAP',
-    url: 'AssetInterface.wsdl',
-    urn: 'QueryAssetById'
+    url: 'MeteringFacade.wsdl',
+    urn: 'GetMeterReadings'
   }, {
-    type: 'SOAP',
-    url: 'Customer.wsdl',
-    urn: 'QueryCustomer'
-  }, {
-    type: 'SOAP',
-    url: 'ActorInterface.wsdl',
-    urn: 'QueryActor'
+    type: 'DB',
+    url: 'ISCuDb',
+    urn: 'QueryDeliveryPoint'
   }], function(err){
     Entity.find({}).remove(function() {
       IntegrationPoint.find({}, function(err, integrationPoints){
-        Entity.create({
-          name: 'CustomerPS',
-          type: 'Proxy',
-          description: 'Service for querying a customer from Siebel and ISCu',
+        Entity.create([{
+          name: 'MeterReading',
+          type: 'OSB',
+          description: 'Service for querying meter readings from ISCu',
+          producing: [],
+          consuming: [integrationPoints[0]._id, integrationPoints[1]._id]
+        }, {
+          name: 'ISCu',
+          type: 'OSB',
+          description: 'Service for querying meter readings from ISCu',
+          producing: [integrationPoints[0]._id],
+          consuming: []
+        }, {
+          name: 'ISCuDB',
+          type: 'OSB',
+          description: 'Service for querying meter readings from ISCu',
           producing: [integrationPoints[1]._id],
-          consuming: [integrationPoints[0]._id, integrationPoints[2]._id]
+          consuming: []
+        }], function(err, entities){
+          integrationPoints[0].entity = entities[1]._id;
+          integrationPoints[0].save()
+          integrationPoints[1].entity = entities[2]._id;
+          integrationPoints[1].save()
         })
       });
     });
@@ -39,8 +52,8 @@ IntegrationPoint.find({}).remove(function() {
 
 FixedValues.find({}).remove(function() {
   FixedValues.create([{
-    entityTypes: ['Proxy','SCA','Java'],
-    integrationPointTypes: ['SOAP', 'FTP', 'FileAdapter', 'POP3']
+    entityTypes: ['OSB','SCA','Java', 'External'],
+    integrationPointTypes: ['SOAP', 'REST','FTP', 'FileAdapter', 'POP3', 'DB']
   }])
 });
 
