@@ -100,6 +100,12 @@
           <label for="integrationpointUrn">URN</label>
           <input type="text" class="form-control" id="integrationpointUrn" ng-model="newIntegrationPoint.urn">
         </div>
+        <div class="form-group">
+          <label for="entityName">Produced by</label>
+          <select class="form-control" ng-model="newIntegrationPoint.entity">
+            <option ng-repeat="entity in entities" value="{{ entity._id }}">{{ entity.name }}</option>
+          </select>
+        </div>
         <button ng-click="addIntegrationPoint(newIntegrationPoint)" class="btn btn-primary">Add integration point</button>
       </form>
       <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="integrationPoint in integrationPoints">
@@ -107,6 +113,13 @@
       </ul>
     </div>
   </div>
+  <div class="btn btn-default" ng-click="draw()">Draw</div>
+  <div class="panel panel-default">
+  <div class="panel-body">
+    <div id="mynetwork"></div>
+  </div>
+</div>
+  
 </div>
 
 <footer class="footer">

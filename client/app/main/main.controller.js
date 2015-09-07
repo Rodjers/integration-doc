@@ -39,4 +39,71 @@ angular.module('integrationDocApp')
         
       })
     }
+
+    $scope.createData = function() {
+      var nodes = [];
+      var edges = [];
+      for(var n = 0; n < $scope.entities.length; n++){
+        nodes[n] = {
+          id: $scope.entities[n]._id,
+          label: $scope.entities[n].name,
+          title: $scope.entities[n].description
+        };
+        for(var i = 0; i < $scope.entities[n].consuming.length; i++){
+          var edge = {
+            from: $scope.entities[n]._id,
+            to: _.find($scope.integrationPoints, {_id: $scope.entities[n].consuming[i]._id}).entity,
+            label: _.find($scope.integrationPoints, {_id: $scope.entities[n].consuming[i]._id}).urn
+          }
+          edges.splice(1,0,edge);
+        }
+      }
+      $scope.data = {
+        nodes: nodes,
+        edges: edges
+      }
+    }
+
+    $scope.options = {
+      physics: {
+        enabled: false
+      },
+      layout: {
+        hierarchical: {
+          enabled: true,
+          direction: 'LR',
+          sortMethod: 'directed',
+          levelSeparation: 300
+      }
+      },
+      edges: {
+        arrows: {
+          to: {
+            enabled: true
+          }
+        },
+        smooth: {
+          enabled: false
+        }
+      }
+
+    };
+
+    $scope.draw = function() {
+    // create an an object with an array of nodes and an array of edges
+    $scope.createData();
+
+    // create a network
+    $scope.container = document.getElementById('mynetwork');
+
+    // provide the data in the vis format
+    //$scope.data = {
+    //    nodes: $scope.nodes,
+    //    edges: $scope.edges
+    //};
+    
+
+    // initialize your network!
+    $scope.network = new vis.Network($scope.container, $scope.data, $scope.options);
+    }
   });
